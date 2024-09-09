@@ -1,4 +1,4 @@
-# Ranking Underline Alugar Casa
+# Ranking Apartamentos Flask
 
 ## Sobre o Projeto
 O projeto "Ranking Apartamentos Flas" surgiu da necessidade pessoal de facilitar o processo de escolha e visita de apartamentos para aluguel. Desenvolvido em Python, ele utiliza a inteligência do ChatGPT para extrair informações de anúncios de apartamentos, organizando-os em uma planilha. Um script Python posteriormente analisa esses dados com base em critérios pré-definidos e pesos atribuídos para cada um, gerando um ranking dos apartamentos mais atraentes para visitação.
@@ -6,7 +6,7 @@ O projeto "Ranking Apartamentos Flas" surgiu da necessidade pessoal de facilitar
 ## Estrutura do Projeto
 
 Abaixo está a estrutura de diretórios do projeto "RankingApartamentosFlask":
-
+```
 /meu_projeto
 │
 ├── /app
@@ -29,7 +29,7 @@ Abaixo está a estrutura de diretórios do projeto "RankingApartamentosFlask":
 ├── config.py
 ├── run.py
 └── requirements.txt
-
+```
 
 ## Funcionalidades
 - **Extração Automatizada de Dados**: Utiliza ChatGPT para extrair dados de anúncios de imóveis online.

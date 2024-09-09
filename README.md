@@ -91,5 +91,5 @@ O projeto tem grande potencial para evolução, com várias áreas de melhorias 
 - **Integração com Banco de Dados**: Atualmente, o projeto utiliza arquivos CSV para armazenamento de dados devido ao seu escopo limitado. No entanto, uma integração com um banco de dados como PostgreSQL ou MongoDB poderia ser considerada para melhorar a gestão de dados e suportar um volume maior de informações de forma mais eficaz.
 
 ## Contato
-Seu Nome - rvinacio@gmail.com
+Rafael Inacio - rvinacio@gmail.com
 Projeto Link: [GitHub Repository](https://github.com/rvinacio/RankingApartamentosFlask)

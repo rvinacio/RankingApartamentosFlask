@@ -49,12 +49,37 @@ O projeto implementa um sistema de pontuação avançado para classificar aparta
 
 O cálculo de distância é realizado através da geolocalização, convertendo endereços em coordenadas de latitude e longitude usando a biblioteca `geopy`, e em seguida, calculando a distância real. Essa abordagem permite uma avaliação precisa e dinâmica dos imóveis, facilitando a decisão de qual apartamento visitar primeiro.
 
-## Como Usar
-Para executar o projeto localmente, siga os passos abaixo:
-1. Clone o repositório para sua máquina local.
-2. Instale as dependências necessárias (listar as dependências ou incluir comando para instalar).
-3. Execute o script para iniciar a extração de dados e geração do ranking.
-4. Inicie o servidor Flask para visualizar o ranking na interface web.
+Sim, exatamente! Você pode copiar o texto que redigi aqui e substituir a seção correspondente no seu `README.md` aberto na sua IDE. As instruções que forneci estão formatadas para serem utilizadas diretamente em seu arquivo Markdown. Aqui está o texto novamente para facilitar a cópia:
+
+### Como Usar
+Para executar o projeto "Ranking Apartamentos Flask" localmente, siga os passos abaixo:
+
+1. **Clone o Repositório**:
+   Abra o terminal e digite o seguinte comando para clonar o repositório para sua máquina local:
+   ```bash
+   git clone https://github.com/rvinacio/RankingApartamentosFlask.git
+   cd RankingApartamentosFlask
+   ```
+
+2. **Instale as Dependências**:
+   Certifique-se de que você está no diretório do projeto e execute o seguinte comando para instalar as dependências listadas no arquivo `requirements.txt`:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Execute o Script**:
+   Execute o script `run.py` para iniciar a aplicação. Esse script configura e inicia o servidor Flask:
+   ```bash
+   python run.py
+   ```
+
+   Isso iniciará o servidor Flask e normalmente o servidor ficará acessível via navegador em `http://localhost:5000` ou outro endereço dependendo das configurações do Flask.
+
+### Comandos Extras
+- Certifique-se de ter o Python instalado em sua máquina.
+- Se estiver usando um ambiente virtual, ative-o antes de instalar as dependências e executar o script.
+
+Copie este texto e substitua a seção correspondente no seu `README.md`. Salve as alterações e, se necessário, siga os passos para adicionar, commitar e enviar as mudanças para o GitHub que discutimos anteriormente. Se precisar de mais ajuda com isso ou com qualquer outra coisa, estou à disposição!
 
 ## Melhorias Futuras
 

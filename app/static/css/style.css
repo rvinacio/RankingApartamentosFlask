@@ -1,0 +1,135 @@
+/* Estilos gerais */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #121212; /* Fundo escuro */
+    color: #e0e0e0; /* Texto claro */
+    margin: 0;
+    padding: 0;
+}
+
+/* Títulos centralizados */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2.6rem; /* Aumenta o tamanho da fonte para o título principal */
+    letter-spacing: 2px; /* Espaçamento entre as letras */
+    color: #bb86fc; /* Roxo claro - destaque */
+    text-transform: uppercase; /* Tudo em maiúsculas */
+}
+
+.desconsiderados-title {
+    text-align: center;
+    font-size: 1.3rem; /* Um pouco menor que o título principal */
+    margin-top: 30px;
+    color: #bb86fc; /* Mesma cor de destaque */
+    text-transform: uppercase; /* Opcional: Tudo em maiúsculas para consistência */
+}
+
+/* Estilos da tabela */
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 90%;
+    max-width: 1200px; /* Limita a largura máxima da tabela */
+    background-color: #1f1f1f; /* Fundo escuro da tabela */
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    color: #ffffff;
+}
+
+/* Linha de separação horizontal */
+tr {
+    border-bottom: 1px solid #2c2c2c; /* Cor cinza claro para separar as linhas */
+}
+
+/* Remove bordas verticais (entre colunas) */
+td {
+    border-left: none;
+    border-right: none;
+}
+
+/* Estilos do cabeçalho */
+th {
+    background-color: #333333; /* Fundo da header da tabela mais escuro */
+    color: #bb86fc; /* Texto da header roxo claro */
+}
+
+/* Cor de fundo alternada para as linhas */
+tr:nth-child(even) {
+    background-color: #2c2c2c;
+}
+
+tr:hover {
+    background-color: #333333; /* Efeito hover escuro */
+}
+
+.material-icons {
+    font-size: 24px;
+    color: #bb86fc; /* Cor do ícone de link roxo claro */
+}
+
+/* Estilos do botão com posicionamento absoluto ajustado */
+.button {
+    position: absolute;
+    top: 0; /* Posiciona no topo do contêiner */
+    right: 60px; /* Pequena margem direita para alinhamento com a tabela */
+    padding: 10px 20px;
+    background-color: #333333; /* Fundo escuro */
+    color: #bb86fc; /* Roxo claro - destaque */
+    border: none;
+    border-radius: 5px;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #bb86fc; /* Muda cor de fundo ao passar o mouse */
+    color: #333333;
+}
+
+/* Contêiner da tabela com posicionamento relativo */
+.table-container {
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+    max-width: 1200px;
+    padding-top: 40px; /* Espaço no topo para o botão */
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinha itens ao final do contêiner (direita) */
+    margin-right: 20px; /* Espaçamento à direita para evitar colar na borda da página */
+    width: 100%; /* Ocupa a largura total disponível */
+}
+
+@media (max-width: 480px) {
+    h1, .desconsiderados-title {
+        font-size: 1.5rem; /* Reduz o tamanho da fonte para títulos em dispositivos menores */
+    }
+
+    table, th, td {
+        width: 100%; /* Ajusta a largura para uso de espaço em dispositivos menores */
+        font-size: 0.8rem; /* Ajuste o tamanho da fonte */
+        padding: 4px; /* Ajusta o padding para economizar espaço */
+    }
+
+    .button {
+        position: static; /* Remover posicionamento absoluto */
+        display: block; /* Garante que o botão ocupe sua própria linha */
+        width: auto; /* Ajusta a largura para se adequar ao conteúdo */
+        margin: 10px auto 20px; /* Centraliza o botão horizontalmente e ajusta a margem */
+        padding: 8px 16px; /* Reduz o padding para diminuir o tamanho do botão */
+        font-size: 0.8rem; /* Reduz o tamanho da fonte */
+    }
+
+    .table-container {
+        padding-top: 60px; /* Ajusta o padding-top para dar espaço ao botão acima da tabela */
+    }
+}

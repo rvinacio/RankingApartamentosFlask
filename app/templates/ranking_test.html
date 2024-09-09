@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking de Imóveis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <h1>Ranking de Imóveis</h1>
+    <div class="content">
+    <button class="button" onclick="atualizarMudancas()">Atualizar Mudanças</button> 
+        <!-- Tabela de Ranqueados -->
+<table id="tabela_imoveis" class="display">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Nome/Endereço</th>
+            <th>Bairro</th>
+            <th>Custo</th>
+            <th>Site</th>
+            <th>Remover</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for index, row in dados_ranqueados.iterrows() %}
+        <tr data-id="{{ row['Código'] }}">
+            <td>{{ loop.index }}</td>
+            <td>{{ row['Nome/Endereço'] }}</td>
+            <td>{{ row['Bairro'] }}</td>
+            <td>{{ row['Valor Total Mensal (R$)'] }}</td>
+            <td>
+                <a href="{{ row['Fonte (site)'] }}" target="_blank">
+                    <i class="material-icons">link</i>
+                </a>
+            </td>
+            <td>
+                <input type="checkbox" class="remove-checkbox" data-id="{{ row['Código'] }}">
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Tabela de Apartamentos Desconsiderados -->
+<h2 class="desconsiderados-title">APARTAMENTOS DESCONSIDERADOS</h2>
+<table id="tabela_desconsiderados" class="display">
+    <thead>
+        <tr>
+            <th>Nome/Endereço</th>
+            <th>Bairro</th>
+            <th>Custo</th>
+            <th>Site</th>
+            <th>Reconsiderar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for index, row in dados_desconsiderados.iterrows() %}
+        <tr>
+            <td>{{ row['Nome/Endereço'] }}</td>
+            <td>{{ row['Bairro'] }}</td>
+            <td>{{ row['Valor Total Mensal (R$)'] }}</td>
+            <td>
+                <a href="{{ row['Fonte (site)'] }}" target="_blank">
+                    <i class="material-icons">link</i>
+                </a>
+            </td>
+            <td>
+                <input type="checkbox" class="reconsider-checkbox" data-id="{{ row['Código'] }}">
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="{{ url_for('static', filename='js/ranking.js') }}"></script> <!-- Inclui o arquivo JS externo -->
+</body>
+</html>

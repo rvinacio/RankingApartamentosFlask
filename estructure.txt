@@ -1,0 +1,35 @@
+/meu_projeto
+│
+├── /app
+│   ├── /static
+│   │   ├── /css
+│   │   ├── /js
+│   │   └── /img
+│   │
+│   ├── /templates
+│   │   └── index.html
+│   │
+│   ├── __init__.py
+│   ├── views.py
+│   ├── models.py
+│   └── forms.py
+│
+├── /data
+│   └── output.csv
+│
+├── config.py
+├── run.py
+└── requirements.txt
+
+
+	1.	/app: Esta pasta contém a lógica principal do seu projeto. Dentro dela:
+	•	/static: Para arquivos estáticos como CSS, JavaScript, imagens, etc.
+	•	/templates: Para arquivos HTML. O Flask procura por templates HTML nesta pasta por padrão.
+	•	__init__.py: Define o pacote do seu aplicativo Flask e inicializa o app.
+	•	views.py: Aqui ficam as funções de rota, que lidam com as solicitações HTTP e renderizam os templates HTML.
+	•	models.py: Caso você tenha modelos de banco de dados ou lógicas de tratamento de dados separadas, pode colocá-las aqui.
+	•	forms.py: Caso você use formulários em seu projeto, eles podem ser organizados aqui.
+	2.	/data: Diretório para armazenar seus arquivos de dados (por exemplo, o CSV gerado). Isso ajuda a manter os arquivos organizados.
+	3.	config.py: Arquivo para configurar variáveis de ambiente, como configurações de banco de dados ou chaves secretas.
+	4.	run.py: O arquivo principal que roda a aplicação Flask. Ele inicia o servidor.
+	5.	requirements.txt: Lista das dependências do seu projeto (bibliotecas Python) que podem ser instaladas com pip.

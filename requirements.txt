@@ -1,4 +1,6 @@
 Flask
 pandas
 geopy
-
+google-cloud-bigquery
+db-dtypes
+python-dotenv

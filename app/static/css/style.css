@@ -11,18 +11,18 @@ body {
 h1 {
     text-align: center;
     margin-top: 20px;
-    font-size: 2.6rem; /* Aumenta o tamanho da fonte para o título principal */
-    letter-spacing: 2px; /* Espaçamento entre as letras */
-    color: #bb86fc; /* Roxo claro - destaque */
-    text-transform: uppercase; /* Tudo em maiúsculas */
+    font-size: 2.6rem;
+    letter-spacing: 2px;
+    color: #bb86fc;
+    text-transform: uppercase;
 }
 
 .desconsiderados-title {
     text-align: center;
-    font-size: 1.3rem; /* Um pouco menor que o título principal */
+    font-size: 1.3rem;
     margin-top: 30px;
-    color: #bb86fc; /* Mesma cor de destaque */
-    text-transform: uppercase; /* Opcional: Tudo em maiúsculas para consistência */
+    color: #bb86fc;
+    text-transform: uppercase;
 }
 
 /* Estilos da tabela */
@@ -30,55 +30,73 @@ table {
     margin: 20px auto;
     border-collapse: collapse;
     width: 90%;
-    max-width: 1200px; /* Limita a largura máxima da tabela */
-    background-color: #1f1f1f; /* Fundo escuro da tabela */
+    max-width: 1200px;
+    background-color: #1f1f1f;
 }
 
-th, td {
+/* Cabeçalhos da tabela */
+th {
     padding: 12px;
     text-align: center;
-    color: #ffffff;
+    background-color: #333333;
+    color: #bb86fc;
+}
+
+/* Células da tabela */
+td {
+    padding: 12px;
+    text-align: center;
+    color: #e0e0e0;
 }
 
 /* Linha de separação horizontal */
 tr {
-    border-bottom: 1px solid #2c2c2c; /* Cor cinza claro para separar as linhas */
+    border-bottom: 1px solid #2c2c2c;
 }
 
-/* Remove bordas verticais (entre colunas) */
-td {
-    border-left: none;
-    border-right: none;
-}
-
-/* Estilos do cabeçalho */
-th {
-    background-color: #333333; /* Fundo da header da tabela mais escuro */
-    color: #bb86fc; /* Texto da header roxo claro */
-}
-
-/* Cor de fundo alternada para as linhas */
+/* Fundo alternado das linhas */
 tr:nth-child(even) {
     background-color: #2c2c2c;
 }
 
-tr:hover {
-    background-color: #333333; /* Efeito hover escuro */
+tr:nth-child(odd) {
+    background-color: #1f1f1f;
 }
 
+/* Efeito hover */
+tr:hover {
+    background-color: #333333;
+}
+
+/* Força a cor clara para todas as células de corpo e cabeçalhos */
+tbody tr td, tbody tr th {
+    color: #e0e0e0 !important;
+}
+
+/* Estilos dos ícones */
 .material-icons {
     font-size: 24px;
-    color: #bb86fc; /* Cor do ícone de link roxo claro */
+    color: #bb86fc;
 }
 
-/* Estilos do botão com posicionamento absoluto ajustado */
+.favorite {
+    cursor: pointer;
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.favorite:hover {
+    color: #ff1744;
+}
+
+/* Estilos do botão */
 .button {
     position: absolute;
-    top: 0; /* Posiciona no topo do contêiner */
-    right: 60px; /* Pequena margem direita para alinhamento com a tabela */
+    top: 0;
+    right: 60px;
     padding: 10px 20px;
-    background-color: #333333; /* Fundo escuro */
-    color: #bb86fc; /* Roxo claro - destaque */
+    background-color: #333333;
+    color: #bb86fc;
     border: none;
     border-radius: 5px;
     font-family: 'Roboto', Arial, sans-serif;
@@ -88,48 +106,192 @@ tr:hover {
 }
 
 .button:hover {
-    background-color: #bb86fc; /* Muda cor de fundo ao passar o mouse */
+    background-color: #bb86fc;
     color: #333333;
 }
 
-/* Contêiner da tabela com posicionamento relativo */
+/* Contêiner da tabela */
 .table-container {
     position: relative;
     width: 90%;
     margin: 20px auto;
     max-width: 1200px;
-    padding-top: 40px; /* Espaço no topo para o botão */
+    padding-top: 40px;
 }
 
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Alinha itens ao final do contêiner (direita) */
-    margin-right: 20px; /* Espaçamento à direita para evitar colar na borda da página */
-    width: 100%; /* Ocupa a largura total disponível */
+/* Estilos do menu na barra */
+.navbar {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-bottom: 1px solid #bb86fc;
+    position: 10px 20px; /* Definir o navbar como o container de referência para o dropdown */
 }
 
+/* Remover seta do menu dropdown */
+.dropdown-toggle::after {
+    display: none !important; /* Esconde a seta para baixo */
+}
+
+.dropdown-menu {
+    top: 50px; /* Ajusta a posição para ficar logo abaixo do ícone de menu */
+    left: 10px; /* Alinha o menu à esquerda, próximo ao ícone */
+    background-color: #333333; /* Mantém a cor de fundo */
+    border: none;
+    width: 270px; /* Definindo um tamanho apropriado */
+    padding: 0;
+    z-index: 1000; /* Garante que o menu apareça sobre outros elementos */
+    display: none; /* Não mostrar o menu até que seja clicado */
+    position: absolute;
+}
+
+
+/* Remover borda ao clicar no menu */
+.dropdown-toggle:focus {
+    box-shadow: none !important; /* Remove a borda ao clicar */
+}
+
+
+/* Estilos dos itens do menu */
+.dropdown-menu .dropdown-item {
+    color: #e0e0e0;
+    padding: 10px 15px; /* Ajuste o espaço ao redor dos itens do menu */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #444444;
+    color: #bb86fc;
+}
+
+/* Responsividade */
 @media (max-width: 480px) {
     h1, .desconsiderados-title {
-        font-size: 1.5rem; /* Reduz o tamanho da fonte para títulos em dispositivos menores */
+        font-size: 1.5rem;
     }
 
     table, th, td {
-        width: 100%; /* Ajusta a largura para uso de espaço em dispositivos menores */
-        font-size: 0.8rem; /* Ajuste o tamanho da fonte */
-        padding: 4px; /* Ajusta o padding para economizar espaço */
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 4px;
     }
 
     .button {
-        position: static; /* Remover posicionamento absoluto */
-        display: block; /* Garante que o botão ocupe sua própria linha */
-        width: auto; /* Ajusta a largura para se adequar ao conteúdo */
-        margin: 10px auto 20px; /* Centraliza o botão horizontalmente e ajusta a margem */
-        padding: 8px 16px; /* Reduz o padding para diminuir o tamanho do botão */
-        font-size: 0.8rem; /* Reduz o tamanho da fonte */
+        position: static;
+        display: block;
+        width: auto;
+        margin: 10px auto 20px;
+        padding: 8px 16px;
+        font-size: 0.8rem;
     }
 
     .table-container {
-        padding-top: 60px; /* Ajusta o padding-top para dar espaço ao botão acima da tabela */
+        padding-top: 60px;
     }
+}
+
+/* Estilizando o pop-up */
+.modal-content {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilizando o título do pop-up */
+.modal-title {
+    color: #bb86fc;
+    font-size: 1.5rem;
+}
+
+/* Estilizando os botões do pop-up */
+.btn-primary {
+    background-color: #bb86fc;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #9b6fd1;
+}
+
+.btn-secondary {
+    background-color: #333333;
+    color: #bb86fc;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #444444;
+}
+
+/* Tamanho do pop-up */
+.modal-dialog {
+    max-width: 500px;
+}
+
+/* Remover o ícone de fechar no topo */
+.modal-header .btn-close {
+    display: none;
+}
+
+.btn-info {
+    background-color: #bb86fc; /* Cor padrão dos ícones e menu */
+    border: none; /* Sem borda */
+    color: #333333; /* Cor do texto */
+}
+
+.btn-info:hover {
+    background-color: #9b6fd1; /* Cor mais escura no hover */
+    color: #ffffff; /* Cor do texto ao passar o mouse */
+}
+
+/* Ícone de anotação no botão "Anotar" - Visível o tempo todo */
+.btn-info .material-icons {
+    font-size: 18px; /* Tamanho do ícone */
+    vertical-align: middle; /* Alinhado com o texto */
+    color: #fff; /* Mantém a cor do ícone visível */
+    transition: none; /* Remove qualquer transição de hover */
+}
+
+/* Remove qualquer efeito de hover adicional que poderia esconder o ícone */
+.btn-info:hover .material-icons {
+    color: #fff; /* Garante que a cor do ícone se mantenha ao passar o mouse */
+}
+
+/* Estilo do ícone de atualização no cabeçalho */
+.update-icon {
+    font-size: 24px; /* Tamanho do ícone */
+    color: #bb86fc; /* Mesma cor do menu */
+    cursor: pointer;
+    transition: color 0.3s;
+    position: absolute;
+    right: 20px; /* Alinhado à direita no cabeçalho */
+    top: 10px; /* Alinhado ao topo do cabeçalho */
+}
+
+.update-icon:hover {
+    color: #9b6fd1; /* Cor do hover */
+}
+
+.material-icons {
+    font-size: 24px;
+    color: #bb86fc; /* Cor roxa inicial */
+    transition: color 0.3s; /* Transição suave */
+}
+
+.material-icons:hover {
+    color: #ffffff; /* Branco ao passar o mouse */
+}
+
+/* Ajustes no botão "Remover" */
+.remove-btn {
+    font-size: 0.9rem; /* Tamanho menor para caber na navbar */
+    padding: 5px 10px; /* Menos padding para reduzir o tamanho */
+    background-color: #bb86fc;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+}
+
+/* Ícone de anotação no botão "Anotar" */
+.btn-sm .material-icons {
+    font-size: 18px; /* Tamanho reduzido para o ícone de anotação */
+    vertical-align: middle;
 }

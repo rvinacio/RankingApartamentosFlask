@@ -1,21 +1,35 @@
 Pontuação Total,Nome/Endereço,Valor Total Mensal (R$),Bairro,Fonte (site),Código,Rank
 28.46,"Próximo ao Hospital 9 de Julho, Bela Vista",3628.35,Bela Vista,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-2-quartos-80-m/AP2200-LSA?from=rent,10,1
-19.06,"Aclimação, São Paulo",3920.0,Aclimação,https://rizkimoveis.com.br/imovel/10118/apartamento-2-quartos-aclimacao-sao-paulo/venda-e-aluguel/,6,2
-18.36,"Rua Cubatão, Vila Mariana",4018.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894548094/alugar/apartamento-2-quartos-vila-mariana-sao-paulo,4,3
-14.499999999999998,"Rua Artur Prado, Bela Vista, São Paulo",4176.0,Bela Vista,https://www.quintoandar.com.br/imovel/894590276/alugar/apartamento-3-quartos-bela-vista-sao-paulo,22,4
-14.159999999999998,"Rua Barata Ribeiro, Bela Vista, São Paulo",4140.0,Bela Vista,https://www.quintoandar.com.br/imovel/893085659,26,5
-11.659999999999998,"Apartamento no bairro Bela Vista, São Paulo",4250.0,Bela Vista,https://www.quintoandar.com.br/imovel/894590276,12,6
-11.360000000000001,"Rua Domingos de Morais, Vila Mariana",4202.75,Vila Mariana,https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-elevador-vila-mariana-zona-sul-sao-paulo-sp-70m2-id-2716602081/,1,7
-6.260000000000001,"Rua Aurora, Santa Ifigênia, São Paulo",4348.0,Santa Ifigênia,https://www.quintoandar.com.br/imovel/894601086/alugar/apartamento-2-quartos-santa-ifigenia-sao-paulo,21,8
-6.16,"Rua Texas, Brooklin Paulista, São Paulo",4621.0,Brooklin Paulista,https://www.quintoandar.com.br/imovel/893762445,24,9
-5.300000000000001,"Rua Maria Paula, Bela Vista, São Paulo",4470.0,Bela Vista,https://www.quintoandar.com.br/imovel/892877492/alugar/apartamento-3-quartos-bela-vista-sao-paulo,23,10
-4.7,"Rua Joaquim Floriano, Itaim Bibi",4572.0,Itaim Bibi,https://www.quintoandar.com.br/imovel/893818139/alugar/apartamento-3-quartos-itaim-bibi-sao-paulo,5,11
-2.66,"Rua Doutor Mário Cardim, Vila Mariana",4603.333333,Vila Mariana,https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-cozinha-vila-mariana-zona-sul-sao-paulo-sp-84m2-id-2735407830/,2,12
-1.66,Próximo ao Metrô Barra Funda,4449.0,Barra Funda,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-2-quartos-62-m/AP1325-LSA?from=rent,7,13
--0.14,Próximo ao Shopping Bourbon,4517.97,Perdizes,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-3-quartos-60-m/AP1351-LSA?from=rent,9,14
--1.1,"Alameda Fernão Cardim, Jardim Paulista",4700.0,Jardim Paulista,https://www.quintoandar.com.br/imovel/894340151/alugar/apartamento-2-quartos-jardim-paulista-sao-paulo,3,15
--1.3399999999999999,Apartamento - Avenida Brigadeiro Luís Antônio,4934.0,Bela Vista,https://www.quintoandar.com.br/imovel/893436879,27,16
--4.499999999999999,Apartamento - Rua Domingos de Morais,5223.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894614711,28,17
--5.34,"Rua Estela, Vila Mariana, São Paulo",5167.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894561348,25,18
--7.7,"Rua Domingos de Morais, Vila Mariana, São Paulo",5374.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894614711,19,19
--30.14,"Consolação, São Paulo",6765.52,Consolação,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-3-quartos-100-m/AP2259-LSA?from=rent,8,20
+25.06,"Jardim Paulista, São Paulo",3751.99,Jardim Paulista,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-jardim-paulista-2dormitorios-1vaga-50m2/MG4884,35,2
+19.06,"Aclimação, São Paulo",3920.0,Aclimação,https://rizkimoveis.com.br/imovel/10118/apartamento-2-quartos-aclimacao-sao-paulo/venda-e-aluguel/,6,3
+18.36,"Rua Cubatão, Vila Mariana",4018.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894548094/alugar/apartamento-2-quartos-vila-mariana-sao-paulo,4,4
+15.860000000000001,"Rua Estela, Vila Mariana",4116.0,Vila Mariana,https://www.quintoandar.com.br/imovel/892821603/alugar/apartamento-2-quartos-vila-mariana-sao-paulo,38,5
+14.56,"Rua Gandavo, Vila Mariana",4157.17,Vila Mariana,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-mariana-2dormitorios-1vaga-70m2/MG5931,33,6
+14.499999999999998,"Rua Artur Prado, Bela Vista, São Paulo",4176.0,Bela Vista,https://www.quintoandar.com.br/imovel/894590276/alugar/apartamento-3-quartos-bela-vista-sao-paulo,22,7
+14.159999999999998,"Rua Barata Ribeiro, Bela Vista, São Paulo",4140.0,Bela Vista,https://www.quintoandar.com.br/imovel/893085659,26,8
+14.1,"Rua Maestro Elias Lobo, Jardim Paulista",4107.0,Jardim Paulista,https://www.quintoandar.com.br/imovel/894103352/alugar/apartamento-2-quartos-jardim-paulista-sao-paulo,37,9
+13.4,Apartamento - Rua José Antônio Coelho,4207.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894614690,30,10
+12.76,"Rua França Pinto, Vila Clementino",4267.0,Vila Clementino,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-clementino-2dormitorios-1vaga-80m2/MG460,44,11
+11.66,"Rua França Pinto, Vila Mariana",4226.0,Vila Mariana,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-mariana-2dormitorios-1vaga-80m2/MG5615,31,12
+11.659999999999998,"Apartamento no bairro Bela Vista, São Paulo",4250.0,Bela Vista,https://www.quintoandar.com.br/imovel/894590276,12,13
+11.360000000000001,"Rua Domingos de Morais, Vila Mariana",4202.75,Vila Mariana,https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-elevador-vila-mariana-zona-sul-sao-paulo-sp-70m2-id-2716602081/,1,14
+9.360000000000001,"Rua Leandro Dupret, Vila Clementino",4400.0,Vila Clementino,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-clementino-2dormitorios-1vaga-70m2/MG1554,42,15
+8.16,"Rua França Pinto, Vila Mariana",4370.0,Vila Mariana,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-mariana-2dormitorios-1suite-50m2/MG1797,32,16
+6.260000000000001,"Rua Aurora, Santa Ifigênia, São Paulo",4348.0,Santa Ifigênia,https://www.quintoandar.com.br/imovel/894601086/alugar/apartamento-2-quartos-santa-ifigenia-sao-paulo,21,17
+6.16,"Rua Texas, Brooklin Paulista, São Paulo",4621.0,Brooklin Paulista,https://www.quintoandar.com.br/imovel/893762445,24,18
+5.620000000000001,"Ipiranga, São Paulo",4448.0,Ipiranga,https://www.mmgimoveis.com.br/imovel/apartamento-venda-sao-paulo-ipiranga-2dormitorios-1suite-2vagas-60m2/MG1795,43,19
+5.300000000000001,"Rua Maria Paula, Bela Vista, São Paulo",4470.0,Bela Vista,https://www.quintoandar.com.br/imovel/892877492/alugar/apartamento-3-quartos-bela-vista-sao-paulo,23,20
+4.7,"Rua Joaquim Floriano, Itaim Bibi",4572.0,Itaim Bibi,https://www.quintoandar.com.br/imovel/893818139/alugar/apartamento-3-quartos-itaim-bibi-sao-paulo,5,21
+2.66,"Rua Doutor Mário Cardim, Vila Mariana",4603.333333,Vila Mariana,https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-cozinha-vila-mariana-zona-sul-sao-paulo-sp-84m2-id-2735407830/,2,22
+1.66,Próximo ao Metrô Barra Funda,4449.0,Barra Funda,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-2-quartos-62-m/AP1325-LSA?from=rent,7,23
+1.52,"Chácara Inglesa, São Paulo",4740.0,Chácara Inglesa,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-chacara-inglesa-3dormitorios-1suite-2vagas-80m2/ZE28877,34,24
+-0.14,Próximo ao Shopping Bourbon,4517.97,Perdizes,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-3-quartos-60-m/AP1351-LSA?from=rent,9,25
+-1.1,"Alameda Fernão Cardim, Jardim Paulista",4700.0,Jardim Paulista,https://www.quintoandar.com.br/imovel/894340151/alugar/apartamento-2-quartos-jardim-paulista-sao-paulo,3,26
+-1.3399999999999999,Apartamento - Avenida Brigadeiro Luís Antônio,4934.0,Bela Vista,https://www.quintoandar.com.br/imovel/893436879,27,27
+-3.34,"Rua Alves Guimarães, Pinheiros",4981.0,Pinheiros,https://www.quintoandar.com.br/imovel/893452823/alugar/apartamento-2-quartos-pinheiros-sao-paulo,36,28
+-5.34,"Rua Estela, Vila Mariana, São Paulo",5167.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894561348,25,29
+-7.54,"Bela Vista, São Paulo",5255.0,Bela Vista,https://www.mmgimoveis.com.br/imovel/apartamento-venda-sao-paulo-bela-vista-2dormitorios-1vaga-83m2/ZE10571,41,30
+-7.7,"Rua Domingos de Morais, Vila Mariana, São Paulo",5374.0,Vila Mariana,https://www.quintoandar.com.br/imovel/894614711,19,31
+-13.48,"Rua França Pinto, Vila Clementino",5820.0,Vila Clementino,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-clementino-3dormitorios-1suite-2vagas-84m2/MG6007,39,32
+-15.58,"Rua França Pinto, Vila Mariana",5725.0,Vila Mariana,https://www.mmgimoveis.com.br/imovel/apartamento-locacao-sao-paulo-vila-mariana-2dormitorios-1suite-2vagas-65m2/MG5961,40,33
+-30.14,"Consolação, São Paulo",6765.52,Consolação,https://www.lsprado.com.br/imovel/apartamento-sao-paulo-3-quartos-100-m/AP2259-LSA?from=rent,8,34

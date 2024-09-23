@@ -8,34 +8,45 @@ O projeto "Ranking Apartamentos Flask" surgiu da necessidade pessoal de facilita
 Abaixo está a estrutura de diretórios do projeto "RankingApartamentosFlask":
 ```
 /meu_projeto
-│
-├── /app
-│   ├── /static
-│   │   ├── /css
-│   │   ├── /js
-│   │   └── /img
-│   │
-│   ├── /templates
-│   │   └── index.html
-│   │
-│   ├── init.py
-│   ├── views.py
-│   ├── models.py
-│   └── forms.py
-│
-├── /data
-│   └── output.csv
-│
-├── config.py
-├── run.py
-└── requirements.txt
+/
+|-- static/
+|   |-- css/
+|   |   |-- style.css
+|   |-- js/
+|   |   |-- ranking.js
+|
+|-- templates/
+|   |-- index.html
+|   |-- ranking.html
+|   |-- layout.html
+|
+|-- scripts/
+|   |-- data_processing.py
+|   |-- db_integration.py
+|
+|-- app/
+|   |-- __init__.py
+|   |-- views.py
+|   |-- utils.py
+|
+|-- README.md
+|-- requirements.txt
+|-- run.py
 ```
 
-## Funcionalidades
-- **Extração Automatizada de Dados**: Utiliza ChatGPT para extrair dados de anúncios de imóveis online.
-- **Avaliação por Critérios**: Aplica pesos a diferentes critérios como preço, número de quartos, banheiros e distância até o trabalho.
-- **Geração de Ranking**: Cria um ranking dinâmico dos apartamentos para ajudar na decisão de qual visitar primeiro.
-- **Interface Web**: Apresenta o ranking em uma página web desenvolvida com Flask, HTML, CSS e Javascript.
+### Funcionalidades
+
+1. **Ranking Automático**: O sistema ranqueia automaticamente os apartamentos de acordo com os critérios estabelecidos, exibindo-os em uma tabela dinâmica.
+
+2. **Anotações e Favoritos**: Usuários podem marcar apartamentos como favoritos e adicionar anotações, permitindo a comparação de diferentes imóveis de maneira personalizada.
+
+3. **Remoção de Apartamentos**: Agora, há um botão de **"Remover"** que permite desconsiderar apartamentos indesejados. Os apartamentos removidos são armazenados em uma tabela separada, permitindo sua reintegração no ranking futuramente.
+
+4. **Reconsideração de Apartamentos**: Os usuários também podem reconsiderar apartamentos previamente desconsiderados, trazendo-os de volta ao ranking com suas pontuações originais.
+
+5. **Botão de Menu**: Um novo botão de menu foi adicionado para facilitar o acesso à página de apartamentos desconsiderados e outras opções futuras.
+
+6. **Integração com Banco de Dados (BigQuery)**: Anteriormente, o projeto utilizava arquivos CSV para armazenar e processar os dados dos apartamentos. Agora, toda a estrutura foi migrada para um banco de dados no **BigQuery**, garantindo maior escalabilidade e desempenho.
 
 ## Tecnologias Utilizadas
 - **Python**: Para lógica de backend e processamento de dados.
@@ -49,7 +60,20 @@ O projeto implementa um sistema de pontuação avançado para classificar aparta
 
 O cálculo de distância é realizado através da geolocalização, convertendo endereços em coordenadas de latitude e longitude usando a biblioteca `geopy`, e em seguida, calculando a distância real. Essa abordagem permite uma avaliação precisa e dinâmica dos imóveis, facilitando a decisão de qual apartamento visitar primeiro.
 
-Sim, exatamente! Você pode copiar o texto que redigi aqui e substituir a seção correspondente no seu `README.md` aberto na sua IDE. As instruções que forneci estão formatadas para serem utilizadas diretamente em seu arquivo Markdown. Aqui está o texto novamente para facilitar a cópia:
+## Processamento de Dados
+
+O tratamento de dados foi alterado para integrar diretamente com o BigQuery. Toda a manipulação de dados (inclusão, remoção e reclassificação dos apartamentos) é feita diretamente no banco de dados, substituindo o uso de arquivos CSV.
+
+### Estrutura de Dados
+
+O projeto utiliza várias tabelas no banco de dados BigQuery:
+
+- **ranking_apartamentos**: Tabela principal que armazena todos os apartamentos ativos no ranking.
+- **ranking_apartamentos_desconsiderados**: Tabela que armazena temporariamente os apartamentos removidos do ranking.
+- **lista_de_imoveis_pontuados**: Tabela que contém os apartamentos pontuados, mostrando a classificação detalhada com base em vários critérios (preço, distância, número de quartos, banheiros, etc.).
+- **favoritos**: Tabela que armazena os apartamentos marcados como favoritos pelos usuários.
+- **comentarios**: Tabela que armazena as anotações feitas pelos usuários sobre cada apartamento.
+
 
 ### Como Usar
 Para executar o projeto "Ranking Apartamentos Flask" localmente, siga os passos abaixo:
@@ -79,17 +103,14 @@ Para executar o projeto "Ranking Apartamentos Flask" localmente, siga os passos 
 - Certifique-se de ter o Python instalado em sua máquina.
 - Se estiver usando um ambiente virtual, ative-o antes de instalar as dependências e executar o script.
 
-Copie este texto e substitua a seção correspondente no seu `README.md`. Salve as alterações e, se necessário, siga os passos para adicionar, commitar e enviar as mudanças para o GitHub que discutimos anteriormente. Se precisar de mais ajuda com isso ou com qualquer outra coisa, estou à disposição!
-
 ## Melhorias Futuras
 
-O projeto tem grande potencial para evolução, com várias áreas de melhorias identificadas:
+O projeto tem grande potencial para evolução, com áreas de melhorias identificadas:
 
 - **Automatização do Processo de Extração de Dados**: Atualmente, a extração de dados é semi-automática e dependente da interação com o ChatGPT. A implementação de um sistema de web scraping diretamente em Python poderia automatizar completamente esse processo, tornando-o mais eficiente e menos propenso a erros.
-- **Melhoria na Interface de Usuário**: A interface web, embora funcional, pode ser melhorada para oferecer uma experiência de usuário mais rica e interativa.
-- **Otimização de Performance**: Com a adição de mais imóveis e critérios, o sistema poderia ser otimizado para garantir que a geração do ranking seja realizada de maneira rápida e eficiente.
-- **Integração com Banco de Dados**: Atualmente, o projeto utiliza arquivos CSV para armazenamento de dados devido ao seu escopo limitado. No entanto, uma integração com um banco de dados como PostgreSQL ou MongoDB poderia ser considerada para melhorar a gestão de dados e suportar um volume maior de informações de forma mais eficaz.
+- **Página de Apartamentos Desconsiderados**: Um dos próximos passos do projeto é desenvolver uma página dedicada aos apartamentos desconsiderados, permitindo aos usuários gerenciar melhor quais imóveis querem reconsiderar.
 
 ## Contato
 Rafael Inacio - rvinacio@gmail.com
 Projeto Link: [GitHub Repository](https://github.com/rvinacio/RankingApartamentosFlask)
+

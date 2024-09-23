@@ -1,101 +1,225 @@
-import pandas as pd
+import os
+from google.cloud import bigquery
+from flask import jsonify
 
-# função para pegar o caminho base do csv
-def get_caminho_base_csv():
-    env = 1  # <<<  env 1 = local // env 2 = produção
-    if env == 1:
-        return '/Users/rafaelinacio/projects/ranking_alugar_casa/data/'
-    else:
-        return '/home/rvinacio/aluguel/data/'
+# Verificar se a variável GOOGLE_APPLICATION_CREDENTIALS está definida
+credentials_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+if credentials_path:
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
+else:
+    raise EnvironmentError('GOOGLE_APPLICATION_CREDENTIALS não foi encontrada no ambiente.')
 
-# definição do caminho dos arquivos
-def get_caminho_csv(param):
-    caminho_ambiente = get_caminho_base_csv()
-    caminho_ranking = f'{caminho_ambiente}ranking_apartamentos.csv'
-    caminho_desconsiderados = f'{caminho_ambiente}apartamentos_desconsiderados.csv'
-    if param == 'ranking':
-        return caminho_ranking
-    else:
-        return caminho_desconsiderados
+# Inicializa o cliente do BigQuery
+client = bigquery.Client()
 
-
-# # função para ler os arquivos csv
-# def ler_csv():
-#     df_ranking = pd.read_csv(get_caminho_csv('ranking'))
-#     df_desconsiderados = pd.read_csv(get_caminho_csv('desconsiderados'))
-#     df_ranking_filtered = df_ranking[~df_ranking['Código']].isin(df_desconsiderados['Código'])
-#     df_ranking_sorted = df_ranking_filtered.sort_values(by="Pontuação Total", ascending=False)
-#     return df_ranking_sorted, df_desconsiderados
-
-# Função para ler os arquivos CSV
-def ler_csv():
-    # Lê os CSVs
-    df_ranking = pd.read_csv(get_caminho_csv('ranking'))
-    df_desconsiderados = pd.read_csv(get_caminho_csv('desconsiderados'))
+# Função para buscar dados do ranking e desconsiderados
+def get_ranking_data():
+    query_ranqueados = """
+        SELECT * FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+        ORDER BY `Pontuacao_Total` DESC
+    """
+    query_desconsiderados = """
+        SELECT * FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
+    """
     
-    # Retira espaço em branco do nome das colunas
-    df_ranking.columns = df_ranking.columns.str.strip()
-    df_desconsiderados.columns = df_desconsiderados.columns.str.strip()
-
-    # Filtra os itens que estão no desconsiderados
-    df_ranking_filtered = df_ranking[~df_ranking['Código'].isin(df_desconsiderados['Código'])]
+    dados_ranqueados = client.query(query_ranqueados).result()
+    dados_desconsiderados = client.query(query_desconsiderados).result()
     
-    # Ordena o DataFrame filtrado pela 'Pontuação Total' em ordem decrescente
-    df_ranking_sorted = df_ranking_filtered.sort_values(by="Pontuação Total", ascending=False)
+    dados_ranqueados = [dict(row) for row in dados_ranqueados]
+    dados_desconsiderados = [dict(row) for row in dados_desconsiderados]
     
-    return df_ranking_sorted, df_desconsiderados
+    return dados_ranqueados, dados_desconsiderados
 
-# fluxo para retirar imóveis do ranking
-def remover_imovel(codigos):
-    # Converte códigos para inteiros (se eles são armazenados como inteiros no CSV)
-    codigos_int = [int(codigo) for codigo in codigos]
+# Função para favoritar ou desfavoritar um apartamento
+def handle_toggle_favorite(fonte):
+    if not fonte:
+        return jsonify({'status': 'error', 'message': 'Nenhum link foi fornecido.'}), 400
 
-    df_ranqueados = pd.read_csv(get_caminho_csv('ranking'))
-    df_desconsiderados = pd.read_csv(get_caminho_csv('desconsiderados'))
+    try:
+        query_check = f"SELECT COUNT(*) as total FROM `rafael-data.ranking_apartamentos_flask.favoritos` WHERE Fonte = '{fonte}'"
+        results = client.query(query_check).result()
+        total_favorites = [row['total'] for row in results][0]
 
-    # Identifica os imóveis a serem removidos usando a lista de inteiros
-    imoveis_removidos = df_ranqueados[df_ranqueados['Código'].isin(codigos_int)]
+        if total_favorites > 0:
+            query_remove = f"DELETE FROM `rafael-data.ranking_apartamentos_flask.favoritos` WHERE Fonte = '{fonte}'"
+            client.query(query_remove)
+            return jsonify({'status': 'success', 'message': 'Apartamento desfavoritado com sucesso.'}), 200
+        else:
+            query_add = f"INSERT INTO `rafael-data.ranking_apartamentos_flask.favoritos` (Fonte) VALUES ('{fonte}')"
+            client.query(query_add)
+            return jsonify({'status': 'success', 'message': 'Apartamento favoritado com sucesso.'}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
-    # Remove os imóveis do DataFrame de ranqueados
-    df_ranqueados = df_ranqueados[~df_ranqueados['Código'].isin(codigos_int)]
-    df_ranqueados.sort_values(by='Pontuação Total', ascending=False, inplace=True)
-    df_ranqueados['Rank'] = range(1, len(df_ranqueados) + 1)
+# Função para salvar ou editar comentários
+def save_comment(fonte, comentario):
+    if not fonte:
+        return jsonify({'status': 'error', 'message': 'Fonte ausente'}), 400
 
-    # Adiciona os imóveis removidos ao DataFrame de desconsiderados
-    df_desconsiderados = pd.concat([df_desconsiderados, imoveis_removidos])
+    try:
+        # Verifica se já existe um comentário para o apartamento
+        query_check = """
+            SELECT * FROM `rafael-data.ranking_apartamentos_flask.comentarios`
+            WHERE Fonte = @fonte
+        """
+        query_params_check = [
+            bigquery.ScalarQueryParameter("fonte", "STRING", fonte)  # Fonte = link do apartamento
+        ]
+        job_config_check = bigquery.QueryJobConfig(query_parameters=query_params_check)
+        results = client.query(query_check, job_config=job_config_check).result()
 
-    # Salva os CSVs atualizados
-    df_ranqueados.to_csv(get_caminho_csv('ranking'), index=False)
-    df_desconsiderados.to_csv(get_caminho_csv('desconsiderados'), index=False)
+        if list(results):
+            # Atualiza o comentário se já existir
+            query_update = """
+                UPDATE `rafael-data.ranking_apartamentos_flask.comentarios`
+                SET Comentarios = @comentario
+                WHERE Fonte = @fonte
+            """
+            query_params_update = [
+                bigquery.ScalarQueryParameter("comentario", "STRING", comentario),
+                bigquery.ScalarQueryParameter("fonte", "STRING", fonte)
+            ]
+            job_config_update = bigquery.QueryJobConfig(query_parameters=query_params_update)
+            client.query(query_update, job_config=job_config_update)
+        else:
+            # Adiciona o comentário se não existir
+            query_add = """
+                INSERT INTO `rafael-data.ranking_apartamentos_flask.comentarios` (Fonte, Comentarios)
+                VALUES (@fonte, @comentario)
+            """
+            query_params_add = [
+                bigquery.ScalarQueryParameter("fonte", "STRING", fonte),
+                bigquery.ScalarQueryParameter("comentario", "STRING", comentario)
+            ]
+            job_config_add = bigquery.QueryJobConfig(query_parameters=query_params_add)
+            client.query(query_add, job_config=job_config_add)
 
+        return jsonify({'status': 'success', 'message': 'Comentário salvo com sucesso'}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
+# Função para deletar um comentário
+def delete_comment(fonte):
+    if not fonte:
+        return jsonify({'status': 'error', 'message': 'Fonte ausente'}), 400
 
-# Fluxo para reinserir imóveis no ranking
-def reconsiderar_imovel(ids):
-    # Converte ids para inteiros, se estiverem como strings
-    ids_int = [int(id) for id in ids]
-    
-    # Carrega o CSV de desconsiderados
-    df_desconsiderados = pd.read_csv(get_caminho_csv('desconsiderados'))
+    try:
+        # Deleta o comentário associado ao link (Fonte)
+        query_delete = """
+            DELETE FROM `rafael-data.ranking_apartamentos_flask.comentarios`
+            WHERE Fonte = @fonte
+        """
+        query_params_delete = [
+            bigquery.ScalarQueryParameter("fonte", "STRING", fonte)
+        ]
+        job_config_delete = bigquery.QueryJobConfig(query_parameters=query_params_delete)
+        client.query(query_delete, job_config=job_config_delete)
 
-    # Encontra os imóveis a serem reconsiderados
-    imoveis_reconsiderados = df_desconsiderados[df_desconsiderados['Código'].isin(ids_int)]
+        return jsonify({'status': 'success', 'message': 'Comentário removido com sucesso'}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
-    # Remove os imóveis reconsiderados do DataFrame de desconsiderados
-    df_desconsiderados = df_desconsiderados[~df_desconsiderados['Código'].isin(ids_int)]
-    # Salva o CSV atualizado de desconsiderados
-    df_desconsiderados.to_csv(get_caminho_csv('desconsiderados'), index=False)
+# Função para obter os favoritos
+def get_favorites():
+    try:
+        query = "SELECT Fonte FROM `rafael-data.ranking_apartamentos_flask.favoritos`"
+        results = client.query(query).result()
 
-    # Carrega o CSV de ranqueados
-    df_ranqueados = pd.read_csv(get_caminho_csv('ranking'))
+        favorites = [row['Fonte'] for row in results]
+        return jsonify(favorites), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
-    # Adiciona os imóveis reconsiderados ao DataFrame de ranqueados
-    df_ranqueados = pd.concat([df_ranqueados, imoveis_reconsiderados], ignore_index=True)
-    # Re-classifica o rank
-    df_ranqueados.sort_values(by='Pontuação Total', ascending=False, inplace=True)
-    df_ranqueados['Rank'] = range(1, len(df_ranqueados) + 1)
+# Função para obter os comentários
+def get_comments():
+    try:
+        query = "SELECT Fonte, Comentarios FROM `rafael-data.ranking_apartamentos_flask.comentarios`"
+        results = client.query(query).result()
 
-    # Salva o CSV atualizado de ranqueados
-    df_ranqueados.to_csv(get_caminho_csv('ranking'), index=False)
+        comments = [{'Fonte': row['Fonte'], 'Comentarios': row['Comentarios']} for row in results]
+        return jsonify(comments), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
+# Função para buscar anotações de um apartamento
+def get_notes(fonte):
+    try:
+        # Busca o comentário na tabela de comentários pelo link (Fonte)
+        query = """
+            SELECT Comentarios FROM `rafael-data.ranking_apartamentos_flask.comentarios`
+            WHERE Fonte = @fonte
+        """
+        query_params = [
+            bigquery.ScalarQueryParameter("fonte", "STRING", fonte)
+        ]
+        job_config = bigquery.QueryJobConfig(query_parameters=query_params)
 
+        result = client.query(query, job_config=job_config).result()
+
+        # Verifica se existe algum resultado
+        comentario = None
+        for row in result:
+            comentario = row['Comentarios']
+
+        # Se o comentário for encontrado, retorna o comentário
+        return jsonify({'comentario': comentario}), 200 if comentario else jsonify({'comentario': ''}), 200
+
+    except Exception as e:
+        # Se ocorrer algum erro, retorna a mensagem de erro
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# Função para mover apartamentos desconsiderados, remover da tabela de ranking e recalcular o ranking
+def remover_apartamentos_do_ranking_e_atualizar(fonte_list):
+    try:
+        print(f"Recebendo fonte_list: {fonte_list}")  # Log para ver o que está sendo passado
+
+        # Inserir apartamentos desconsiderados na tabela `ranking_apartamentos_desconsiderados`
+        query_insert = """
+            INSERT INTO `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
+            (Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank)
+            SELECT Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank
+            FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+            WHERE Fonte IN UNNEST(@fonte_list)
+        """
+        query_params_insert = [
+            bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte' (links dos apartamentos)
+        ]
+        job_config_insert = bigquery.QueryJobConfig(query_parameters=query_params_insert)
+        print(f"Executando query_insert com fonte_list: {fonte_list}")
+        client.query(query_insert, job_config=job_config_insert).result()
+
+        # Remover os apartamentos da tabela `ranking_apartamentos`
+        query_delete = """
+            DELETE FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+            WHERE Fonte IN UNNEST(@fonte_list)
+        """
+        query_params_delete = [
+            bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte'
+        ]
+        job_config_delete = bigquery.QueryJobConfig(query_parameters=query_params_delete)
+        print(f"Executando query_delete com fonte_list: {fonte_list}")
+        client.query(query_delete, job_config=job_config_delete).result()
+
+        # Recalcular o ranking restante (reordenar os apartamentos pela Pontuação_Total e atualizar o campo rank)
+        query_reorder = """
+            CREATE OR REPLACE TABLE `rafael-data.ranking_apartamentos_flask.ranking_apartamentos` AS
+            SELECT 
+                Codigo,
+                Nome_Endereco,
+                Bairro,
+                Valor_Total_Mensal,
+                Fonte,
+                Pontuacao_Total,
+                ROW_NUMBER() OVER (ORDER BY Pontuacao_Total DESC) AS rank
+            FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+            ORDER BY Pontuacao_Total DESC
+        """
+        print(f"Executando query_reorder para recalcular o ranking")
+        client.query(query_reorder).result()
+
+        print(f"Processo concluído com sucesso.")
+        return jsonify({'status': 'success', 'message': 'Apartamentos removidos e ranking atualizado com sucesso.'}), 200
+
+    except Exception as e:
+        print(f"Erro: {str(e)}")  # Log do erro
+        return jsonify({'status': 'error', 'message': str(e)}), 500

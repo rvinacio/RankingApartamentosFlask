@@ -3,27 +3,27 @@ from google.cloud import bigquery
 from flask import jsonify
 from google.auth import default
 
-# Inicializa o cliente BigQuery
-client = bigquery.Client()
+# # Inicializa o cliente BigQuery
+# client = bigquery.Client()
 
-# def get_bigquery_client():
-#     # Verifica se estÃ¡ rodando no Google App Engine (GAE_ENV serÃ¡ definido no App Engine)
-#     if os.getenv('GAE_ENV', '').startswith('standard'):
-#         # No App Engine, use as credenciais padrão automaticamente
-#         client = bigquery.Client()
-#     else:
-#         # Se estiver localmente, use o arquivo de credenciais definido pelo .env
-#         credentials_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-#         if credentials_path:
-#             os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
-#             client = bigquery.Client()
-#         else:
-#             raise EnvironmentError('GOOGLE_APPLICATION_CREDENTIALS não foi encontrada no ambiente.')
+def get_bigquery_client():
+    # Verifica se estÃ¡ rodando no Google App Engine (GAE_ENV serÃ¡ definido no App Engine)
+    if os.getenv('GAE_ENV', '').startswith('standard'):
+        # No App Engine, use as credenciais padrão automaticamente
+        client = bigquery.Client()
+    else:
+        # Se estiver localmente, use o arquivo de credenciais definido pelo .env
+        credentials_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+        if credentials_path:
+            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
+            client = bigquery.Client()
+        else:
+            raise EnvironmentError('GOOGLE_APPLICATION_CREDENTIALS não foi encontrada no ambiente.')
     
-#     return client
+    return client
 
-# # Inicializa o cliente BigQuery com base no ambiente
-# client = get_bigquery_client()
+# Inicializa o cliente BigQuery com base no ambiente
+client = get_bigquery_client()
 
 
 # Função para buscar dados do ranking e desconsiderados

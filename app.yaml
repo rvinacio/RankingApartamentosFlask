@@ -1,0 +1,14 @@
+runtime: python39  # ou a versão do Python que você está usando
+
+entrypoint: gunicorn -b :$PORT run:app
+
+handlers:
+  - url: /static
+    static_dir: static
+
+readiness_check:
+  path: "/"
+  timeout_sec: 4
+  check_interval_sec: 5
+  failure_threshold: 2
+  success_threshold: 2

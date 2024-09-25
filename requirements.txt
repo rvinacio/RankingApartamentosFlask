@@ -1,6 +1,7 @@
-Flask
-pandas
-geopy
-google-cloud-bigquery
-db-dtypes
+Flask==3.0.3
+google-cloud-bigquery==3.25.0
+google-cloud-core==2.4.1
+google-auth==2.34.0
+requests==2.32.3
+gunicorn==20.1.0
 python-dotenv

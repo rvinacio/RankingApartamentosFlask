@@ -144,17 +144,6 @@ def get_favorites():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-# Função para obter os comentários
-def get_comments():
-    try:
-        query = "SELECT Fonte, Comentarios FROM `rafael-data.ranking_apartamentos_flask.comentarios`"
-        results = client.query(query).result()
-
-        comments = [{'Fonte': row['Fonte'], 'Comentarios': row['Comentarios']} for row in results]
-        return jsonify(comments), 200
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-
 # Função para buscar anotações de um apartamento
 def get_notes(fonte):
     try:
@@ -175,12 +164,16 @@ def get_notes(fonte):
         for row in result:
             comentario = row['Comentarios']
 
-        # Se o comentário for encontrado, retorna o comentário
-        return jsonify({'comentario': comentario}), 200 if comentario else jsonify({'comentario': ''}), 200
+        # Se o comentário for encontrado, retorna o comentário como string no JSON
+        if comentario:
+            return jsonify({'comentario': comentario}), 200
+        else:
+            return jsonify({'comentario': ''}), 200
 
     except Exception as e:
         # Se ocorrer algum erro, retorna a mensagem de erro
         return jsonify({'status': 'error', 'message': str(e)}), 500
+    
 
 # Função para mover apartamentos desconsiderados, remover da tabela de ranking e recalcular o ranking
 def remover_apartamentos_do_ranking_e_atualizar(fonte_list):

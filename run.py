@@ -1,7 +1,7 @@
 from app import app
 
-# if __name__ == '__main__':
-#     app.run()
+if __name__ == '__main__':
+    app.run()
 
 # No ambiente local, utilizar o código a seguir:
 
@@ -9,5 +9,5 @@ from app import app
 #     app.run(debug=True)
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=8080)

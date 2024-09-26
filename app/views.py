@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify
 from app import app
 from app.utils import (
     get_ranking_data, handle_toggle_favorite, save_comment, 
-    get_favorites, get_comments, get_notes, delete_comment, 
+    get_favorites, get_notes, delete_comment, 
     remover_apartamentos_do_ranking_e_atualizar
 )
 
@@ -37,24 +37,22 @@ def save_notes():
     
     return save_comment(fonte, comentario)
 
-# Rota para buscar anotações existentes
 @app.route('/get_notes', methods=['GET'])
 def get_notes_route():
-    fonte = request.args.get('fonte')  # Pega o link do apartamento como string
+    fonte = request.args.get('fonte')  # Garantimos que 'fonte' seja uma string diretamente
     if not fonte:
         return jsonify({'status': 'error', 'message': 'Fonte não fornecida'}), 400
     
+    # Chamamos a função que busca o comentário
     return get_notes(fonte)
+
+
 
 # Rota para obter os favoritos
 @app.route('/get_favorites', methods=['GET'])
 def get_favorites_route():
     return get_favorites()
 
-# Rota para obter os comentários
-@app.route('/get_comments', methods=['GET'])
-def get_comments_route():
-    return get_comments()
 
 # Rota para remover o apartamento e recalcular o ranking
 @app.route('/remover_imovel', methods=['POST'])

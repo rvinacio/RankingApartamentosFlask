@@ -95,19 +95,22 @@ function fetchNotes(codigo) {
     const link = $(`.favorite[data-id="${codigo}"]`).data('link');
     console.log("Link recebido para anotações:", link);
 
-    fetch(`/get_notes?fonte=${encodeURIComponent(link)}`, {
+    fetch(`/get_notes?fonte=${link}`, {  // Não utilizamos `encodeURIComponent`
         method: 'GET',
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById(`notes${codigo}`).value = data.comentario || "";
-        console.log('Anotações carregadas com sucesso:', data.comentario);
+        if (data && typeof data === 'object') {
+            document.getElementById(`notes${codigo}`).value = data.comentario || "";
+            console.log('Anotações carregadas com sucesso:', data.comentario);
+        } else {
+            console.error('Erro: O resultado não é um objeto JSON.', data);
+        }
     })
     .catch(error => {
         console.error('Erro ao carregar as anotações:', error);
     });
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     // Função para abrir e fechar o menu dropdown
     const menuToggle = document.querySelector('.navbar .material-icons.menu-icon');
@@ -127,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Função para o ícone de atualizar (Agora faz o que é necessário)
+    // Função para o ícone de atualizar
     const refreshIcon = document.querySelector('.navbar .material-icons.refresh-icon');
     
     if (refreshIcon) {

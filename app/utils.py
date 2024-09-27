@@ -175,40 +175,13 @@ def get_notes(fonte):
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 
-# Função para mover apartamentos desconsiderados, remover da tabela de ranking e recalcular o ranking
-def remover_apartamentos_do_ranking_e_atualizar(fonte_list):
+def atualizar_ranking_apartamentos(fonte_list):
     try:
-        print(f"Recebendo fonte_list: {fonte_list}")  # Log para ver o que está sendo passado
-
-        # Inserir apartamentos desconsiderados na tabela `ranking_apartamentos_desconsiderados`
-        query_insert = """
-            INSERT INTO `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
-            (Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank)
-            SELECT Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank
-            FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
-            WHERE Fonte IN UNNEST(@fonte_list)
-        """
-        query_params_insert = [
-            bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte' (links dos apartamentos)
-        ]
-        job_config_insert = bigquery.QueryJobConfig(query_parameters=query_params_insert)
-        print(f"Executando query_insert com fonte_list: {fonte_list}")
-        client.query(query_insert, job_config=job_config_insert).result()
-
-        # Remover os apartamentos da tabela `ranking_apartamentos`
-        query_delete = """
-            DELETE FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
-            WHERE Fonte IN UNNEST(@fonte_list)
-        """
-        query_params_delete = [
-            bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte'
-        ]
-        job_config_delete = bigquery.QueryJobConfig(query_parameters=query_params_delete)
-        print(f"Executando query_delete com fonte_list: {fonte_list}")
-        client.query(query_delete, job_config=job_config_delete).result()
-
-        # Recalcular o ranking restante (reordenar os apartamentos pela Pontuação_Total e atualizar o campo rank)
-        query_reorder = """
+        # Log para acompanhar a lista de fontes a serem removidas
+        print(f"Recriando a tabela 'ranking_apartamentos', excluindo os itens com as fontes: {fonte_list}")
+        
+        # Query para recriar a tabela 'ranking_apartamentos' excluindo os apartamentos com fontes na 'fonte_list'
+        query_recreate = """
             CREATE OR REPLACE TABLE `rafael-data.ranking_apartamentos_flask.ranking_apartamentos` AS
             SELECT 
                 Codigo,
@@ -219,14 +192,125 @@ def remover_apartamentos_do_ranking_e_atualizar(fonte_list):
                 Pontuacao_Total,
                 ROW_NUMBER() OVER (ORDER BY Pontuacao_Total DESC) AS rank
             FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+            WHERE Fonte NOT IN UNNEST(@fonte_list)
             ORDER BY Pontuacao_Total DESC
         """
-        print(f"Executando query_reorder para recalcular o ranking")
-        client.query(query_reorder).result()
-
-        print(f"Processo concluído com sucesso.")
-        return jsonify({'status': 'success', 'message': 'Apartamentos removidos e ranking atualizado com sucesso.'}), 200
+        
+        # Passando a lista de fontes como parâmetro para excluir
+        query_params = [
+            bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)
+        ]
+        
+        job_config = bigquery.QueryJobConfig(query_parameters=query_params)
+        
+        # Executar a query para recriar a tabela
+        client.query(query_recreate, job_config=job_config).result()
+        
+        print(f"Tabela 'ranking_apartamentos' recriada com sucesso, excluindo os itens especificados.")
+        return True
 
     except Exception as e:
-        print(f"Erro: {str(e)}")  # Log do erro
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+        print(f"Erro ao recriar a tabela 'ranking_apartamentos': {str(e)}")
+        return False
+    
+
+def desconsiderar_apartamento(fonte_list):
+    try:
+        # Verificar se os apartamentos já estão na tabela 'ranking_apartamentos_desconsiderados'
+        query_check = """
+            SELECT Fonte FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
+            WHERE Fonte IN UNNEST(@fonte_list)
+        """
+        
+        query_params_check = [
+            bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)
+        ]
+        
+        job_config_check = bigquery.QueryJobConfig(query_parameters=query_params_check)
+        existing_desconsiderados = client.query(query_check, job_config=job_config_check).to_dataframe()
+        
+        # Filtrar os apartamentos que ainda não estão na tabela 'ranking_apartamentos_desconsiderados'
+        fontes_novas = [fonte for fonte in fonte_list if fonte not in existing_desconsiderados['Fonte'].tolist()]
+        
+        if fontes_novas:
+            # Inserir apartamentos que não estão na tabela 'ranking_apartamentos_desconsiderados'
+            query_insert = """
+                INSERT INTO `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
+                (Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank)
+                SELECT Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank
+                FROM `rafael-data.ranking_apartamentos_flask.lista_de_imoveis_pontuados`
+                WHERE Fonte IN UNNEST(@fonte_list)
+            """
+            query_params_insert = [
+                bigquery.ArrayQueryParameter("fonte_list", "STRING", fontes_novas)
+            ]
+            job_config_insert = bigquery.QueryJobConfig(query_parameters=query_params_insert)
+            client.query(query_insert, job_config=job_config_insert).result()
+
+            print(f"Apartamentos desconsiderados inseridos com sucesso.")
+            return True
+        else:
+            print(f"Nenhum novo apartamento para desconsiderar.")
+            return False
+
+    except Exception as e:
+        print(f"Erro ao desconsiderar apartamentos: {str(e)}")
+        return False
+    
+    
+
+# # Função para mover apartamentos desconsiderados, remover da tabela de ranking e recalcular o ranking
+# def remover_apartamentos_do_ranking_e_atualizar(fonte_list):
+#     try:
+#         print(f"Recebendo fonte_list: {fonte_list}")  # Log para ver o que está sendo passado
+
+#         # Inserir apartamentos desconsiderados na tabela `ranking_apartamentos_desconsiderados`
+#         query_insert = """
+#             INSERT INTO `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
+#             (Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank)
+#             SELECT Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank
+#             FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+#             WHERE Fonte IN UNNEST(@fonte_list)
+#         """
+#         query_params_insert = [
+#             bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte' (links dos apartamentos)
+#         ]
+#         job_config_insert = bigquery.QueryJobConfig(query_parameters=query_params_insert)
+#         print(f"Executando query_insert com fonte_list: {fonte_list}")
+#         client.query(query_insert, job_config=job_config_insert).result()
+
+#         # Remover os apartamentos da tabela `ranking_apartamentos`
+#         query_delete = """
+#             DELETE FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+#             WHERE Fonte IN UNNEST(@fonte_list)
+#         """
+#         query_params_delete = [
+#             bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte'
+#         ]
+#         job_config_delete = bigquery.QueryJobConfig(query_parameters=query_params_delete)
+#         print(f"Executando query_delete com fonte_list: {fonte_list}")
+#         client.query(query_delete, job_config=job_config_delete).result()
+
+#         # Recalcular o ranking restante (reordenar os apartamentos pela Pontuação_Total e atualizar o campo rank)
+#         query_reorder = """
+#             CREATE OR REPLACE TABLE `rafael-data.ranking_apartamentos_flask.ranking_apartamentos` AS
+#             SELECT 
+#                 Codigo,
+#                 Nome_Endereco,
+#                 Bairro,
+#                 Valor_Total_Mensal,
+#                 Fonte,
+#                 Pontuacao_Total,
+#                 ROW_NUMBER() OVER (ORDER BY Pontuacao_Total DESC) AS rank
+#             FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
+#             ORDER BY Pontuacao_Total DESC
+#         """
+#         print(f"Executando query_reorder para recalcular o ranking")
+#         client.query(query_reorder).result()
+
+#         print(f"Processo concluído com sucesso.")
+#         return jsonify({'status': 'success', 'message': 'Apartamentos removidos e ranking atualizado com sucesso.'}), 200
+
+#     except Exception as e:
+#         print(f"Erro: {str(e)}")  # Log do erro
+#         return jsonify({'status': 'error', 'message': str(e)}), 500

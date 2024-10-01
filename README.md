@@ -5,6 +5,12 @@ O "Ranking Apartamentos Flask" é um projeto desenvolvido com o intuito de compa
 
 Esse projeto surgiu da necessidade pessoal de facilitar o processo de escolha e visita de apartamentos para aluguel. Desenvolvido em Python, ele utiliza a inteligência do ChatGPT para extrair informações de anúncios de apartamentos, organizando-os em uma planilha. Um script Python posteriormente analisa esses dados com base em critérios pré-definidos e pesos atribuídos para cada um, gerando um ranking dos apartamentos mais atraentes para visitação.
 
+## Acesso ao Ranking
+
+Você pode acessar o ranking gerado por este projeto através do seguinte link: [Acessar Ranking Apartamentos Flask](https://ranking-apartamento-flask.rj.r.appspot.com/)
+
+Esse link leva à versão hospedada do projeto, permitindo interagir diretamente com o sistema de ranking em tempo real.
+
 ## Objetivos de Aprendizado
 O projeto foi criado para servir como um recurso educativo abrangendo vários aspectos de desenvolvimento e operações de TI, incluindo:
 

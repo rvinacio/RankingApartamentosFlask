@@ -3,9 +3,6 @@ from google.cloud import bigquery
 from flask import jsonify
 from google.auth import default
 
-# # Inicializa o cliente BigQuery
-# client = bigquery.Client()
-
 def get_bigquery_client():
     # Verifica se estÃ¡ rodando no Google App Engine (GAE_ENV serÃ¡ definido no App Engine)
     if os.getenv('GAE_ENV', '').startswith('standard'):
@@ -256,61 +253,3 @@ def desconsiderar_apartamento(fonte_list):
     except Exception as e:
         print(f"Erro ao desconsiderar apartamentos: {str(e)}")
         return False
-    
-    
-
-# # Função para mover apartamentos desconsiderados, remover da tabela de ranking e recalcular o ranking
-# def remover_apartamentos_do_ranking_e_atualizar(fonte_list):
-#     try:
-#         print(f"Recebendo fonte_list: {fonte_list}")  # Log para ver o que está sendo passado
-
-#         # Inserir apartamentos desconsiderados na tabela `ranking_apartamentos_desconsiderados`
-#         query_insert = """
-#             INSERT INTO `rafael-data.ranking_apartamentos_flask.ranking_apartamentos_desconsiderados`
-#             (Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank)
-#             SELECT Codigo, Nome_Endereco, Bairro, Valor_Total_Mensal, Fonte, Pontuacao_Total, rank
-#             FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
-#             WHERE Fonte IN UNNEST(@fonte_list)
-#         """
-#         query_params_insert = [
-#             bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte' (links dos apartamentos)
-#         ]
-#         job_config_insert = bigquery.QueryJobConfig(query_parameters=query_params_insert)
-#         print(f"Executando query_insert com fonte_list: {fonte_list}")
-#         client.query(query_insert, job_config=job_config_insert).result()
-
-#         # Remover os apartamentos da tabela `ranking_apartamentos`
-#         query_delete = """
-#             DELETE FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
-#             WHERE Fonte IN UNNEST(@fonte_list)
-#         """
-#         query_params_delete = [
-#             bigquery.ArrayQueryParameter("fonte_list", "STRING", fonte_list)  # Lista de chaves 'Fonte'
-#         ]
-#         job_config_delete = bigquery.QueryJobConfig(query_parameters=query_params_delete)
-#         print(f"Executando query_delete com fonte_list: {fonte_list}")
-#         client.query(query_delete, job_config=job_config_delete).result()
-
-#         # Recalcular o ranking restante (reordenar os apartamentos pela Pontuação_Total e atualizar o campo rank)
-#         query_reorder = """
-#             CREATE OR REPLACE TABLE `rafael-data.ranking_apartamentos_flask.ranking_apartamentos` AS
-#             SELECT 
-#                 Codigo,
-#                 Nome_Endereco,
-#                 Bairro,
-#                 Valor_Total_Mensal,
-#                 Fonte,
-#                 Pontuacao_Total,
-#                 ROW_NUMBER() OVER (ORDER BY Pontuacao_Total DESC) AS rank
-#             FROM `rafael-data.ranking_apartamentos_flask.ranking_apartamentos`
-#             ORDER BY Pontuacao_Total DESC
-#         """
-#         print(f"Executando query_reorder para recalcular o ranking")
-#         client.query(query_reorder).result()
-
-#         print(f"Processo concluído com sucesso.")
-#         return jsonify({'status': 'success', 'message': 'Apartamentos removidos e ranking atualizado com sucesso.'}), 200
-
-#     except Exception as e:
-#         print(f"Erro: {str(e)}")  # Log do erro
-#         return jsonify({'status': 'error', 'message': str(e)}), 500

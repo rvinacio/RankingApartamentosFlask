@@ -1,7 +1,19 @@
 # Ranking Apartamentos Flask
 
 ## Sobre o Projeto
-O projeto "Ranking Apartamentos Flask" surgiu da necessidade pessoal de facilitar o processo de escolha e visita de apartamentos para aluguel. Desenvolvido em Python, ele utiliza a inteligência do ChatGPT para extrair informações de anúncios de apartamentos, organizando-os em uma planilha. Um script Python posteriormente analisa esses dados com base em critérios pré-definidos e pesos atribuídos para cada um, gerando um ranking dos apartamentos mais atraentes para visitação.
+O "Ranking Apartamentos Flask" é um projeto desenvolvido com o intuito de compartilhar conhecimentos práticos sobre desenvolvimento web com Flask e Python, e o uso de plataformas de nuvem como o Google Cloud Platform, especificamente App Engine e BigQuery. Este projeto não só demonstra a aplicação de Python e Flask na criação de páginas web, mas também oferece insights sobre como estruturar e hospedar aplicações na nuvem, manipular dados com BigQuery, e mais.
+
+Esse projeto surgiu da necessidade pessoal de facilitar o processo de escolha e visita de apartamentos para aluguel. Desenvolvido em Python, ele utiliza a inteligência do ChatGPT para extrair informações de anúncios de apartamentos, organizando-os em uma planilha. Um script Python posteriormente analisa esses dados com base em critérios pré-definidos e pesos atribuídos para cada um, gerando um ranking dos apartamentos mais atraentes para visitação.
+
+## Objetivos de Aprendizado
+O projeto foi criado para servir como um recurso educativo abrangendo vários aspectos de desenvolvimento e operações de TI, incluindo:
+
+1. **Desenvolvimento Web com Flask**: Demonstração prática de como configurar e executar uma aplicação web usando o microframework Flask.
+2. **Hospedagem com Google App Engine**: Instruções detalhadas sobre como configurar e desdobrar uma aplicação em Flask no ambiente de nuvem do App Engine (em breve).
+3. **Integração com BigQuery**: Uso do BigQuery como back-end para armazenamento e consulta de dados, demonstrando como integrar tecnologias de nuvem com aplicações web (em breve).
+4. **Scripts Python para Processamento de Dados**: Exploração do uso de scripts Python para manipulação e análise de dados, crucial para operações de back-end.
+5. **Segurança com IAM do Google Cloud**: Explicação sobre o Identity and Access Management (IAM), demonstrando como configurar e gerenciar acessos no Google Cloud (em breve).
+6. **Operações de Terminal**: Utilização do terminal para operações de versionamento com Git, deploy com gcloud, e teste local de aplicações.
 
 ## Estrutura do Projeto
 
@@ -49,9 +61,9 @@ RankingApartamentosFlask/
 6. **Integração com Banco de Dados (BigQuery)**: Anteriormente, o projeto utilizava arquivos CSV para armazenar e processar os dados dos apartamentos. Agora, toda a estrutura foi migrada para um banco de dados no **BigQuery**, garantindo maior escalabilidade e desempenho.
 
 ## Tecnologias Utilizadas
-- **Python**: Para lógica de backend e processamento de dados.
-- **Flask**: Para criação da interface web.
-- **HTML/CSS/JavaScript**: Para design e interatividade da página web.
+- **Python, Flask**: Para toda a lógica de back-end e interação com o banco de dados.
+- **HTML, CSS, JavaScript**: Para construção da interface do usuário.
+- **Google App Engine, BigQuery**: Para hospedagem e gerenciamento de dados.
 - **Jupyter Notebook**: Utilizado para desenvolvimento e testes de protótipos do código.
 
 ## Gamificação e Sistema de Pontuação
@@ -74,6 +86,8 @@ O projeto utiliza várias tabelas no banco de dados BigQuery:
 - **favoritos**: Tabela que armazena os apartamentos marcados como favoritos pelos usuários.
 - **comentarios**: Tabela que armazena as anotações feitas pelos usuários sobre cada apartamento.
 
+### Acesso aos Dados
+Atualmente, o projeto requer acesso ao BigQuery para operar completamente, pois depende de dados armazenados nesse serviço. No futuro próximo, planejamos implementar melhorias que simplificarão este processo. Estamos explorando alternativas como o uso do Datastore do Google App Engine, que permitirão executar o projeto sem necessidade de configurações complexas de acesso ao BigQuery. Isso tornará mais fácil para qualquer pessoa executar o projeto localmente sem preocupações adicionais de configuração de acesso a dados.
 
 ### Como Usar
 Para executar o projeto "Ranking Apartamentos Flask" localmente, siga os passos abaixo:
@@ -116,6 +130,10 @@ O projeto tem grande potencial para evolução, com áreas de melhorias identifi
 - **Uso do BigQuery como Data Warehouse**: O banco de dados utilizado atualmente é o **BigQuery**, que, apesar de ser um **Data Warehouse**, foi escolhido pela facilidade e rapidez na curva de aprendizado. Embora o BigQuery não seja o ideal para operações que envolvem atualizações frequentes de linhas, como exigido pelo App Engine, ele resolveu o problema inicial devido ao seu conhecimento prévio. Para melhorias futuras, um banco de dados específico para o **App Engine**, mais otimizado para atualizações frequentes e operações de leitura/escrita, poderá ser implementado, melhorando a performance da aplicação.
 - **Pipeline de Dados com Python**: O pipeline de dados atual é feito utilizando **Python** e executado via **Jupyter Notebooks**. Embora ele atenda às necessidades iniciais do projeto, há espaço para melhorias em termos de performance e estruturação. Um pipeline mais robusto poderia ser desenvolvido, aumentando a eficiência e escalabilidade do processo de tratamento de dados.
 - **Modelagem de Dados**: Como parte das melhorias planejadas, será desenvolvida uma modelagem de dados formal, incluindo o modelo físico ou conceitual das tabelas, para que seja possível recriar as tabelas de forma idêntica ao que foi feito no projeto. Atualmente, como solução provisória, as informações sobre o formato das tabelas podem ser encontradas no arquivo **nova_pontuacao.ipynb** (localizado na pasta **scripts** no GitHub), que trata os dados e realiza a conexão com o banco de dados para carregar as tabelas. Esse notebook contém os `INSERTs`, `DELETEs` e o esquema das tabelas. Embora este não seja o método mais apropriado para documentar a estrutura dos dados, ele fornece uma visão das colunas e do esquema utilizado até que a modelagem completa seja disponibilizada.
+
+### Conclusão
+Este projeto é um esforço prático para fornecer uma base sólida de conhecimento que pode ser expandida e adaptada. Ele serve como um excelente ponto de partida para quem deseja aprofundar-se em desenvolvimento web, manipulação de dados, e mais. Em breve, planejo acrescentar aqui detalhes da configuração da hospedagem no App Engine, Google Cloud Storage e IAM. 
+
 
 ## Contato
 Rafael Inacio - rvinacio@gmail.com

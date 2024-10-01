@@ -5,33 +5,33 @@ O projeto "Ranking Apartamentos Flask" surgiu da necessidade pessoal de facilita
 
 ## Estrutura do Projeto
 
-Abaixo está a estrutura de diretórios do projeto "RankingApartamentosFlask":
+Abaixo está a estrutura de diretórios do projeto "Ranking Apartamentos Flask":
 ```
-/meu_projeto
-/
-|-- static/
-|   |-- css/
-|   |   |-- style.css
-|   |-- js/
-|   |   |-- ranking.js
-|
-|-- templates/
-|   |-- index.html
-|   |-- ranking.html
-|   |-- layout.html
-|
-|-- scripts/
-|   |-- data_processing.py
-|   |-- db_integration.py
-|
-|-- app/
-|   |-- __init__.py
-|   |-- views.py
-|   |-- utils.py
-|
-|-- README.md
-|-- requirements.txt
-|-- run.py
+RankingApartamentosFlask/
+│
+├── app/
+│   ├── __init__.py          # Inicialização do app Flask
+│   ├── views.py             # Arquivo com as rotas do app
+│   ├── utils.py             # Funções auxiliares (e.g. manipulação de dados)
+│   ├── static/              # Arquivos estáticos como CSS e JS
+│   │   ├── style.css        # Arquivo de estilos CSS
+│   │   ├── ranking.js       # Arquivo JavaScript
+│   │   └── jquery.min.js    # Biblioteca jQuery local
+│   ├── templates/           # Templates HTML do app
+│   │   ├── layout.html      # Layout base para as páginas
+│   │   ├── ranking.html     # Página principal de ranking
+│   │   └── desconsiderados.html # Página de imóveis desconsiderados
+│
+├── scripts/                 # Scripts auxiliares para manipulação de dados e rodar jobs
+│   └── nova_pontuacao.py    # Script para calcular pontuações de imóveis
+│
+├── requirements.txt         # Dependências do projeto (Flask, BigQuery, etc.)
+├── app.yaml                 # Configuração do App Engine (Google Cloud)
+├── .gcloudignore            # Arquivo para ignorar no deploy do GCP
+├── .gitignore               # Arquivo para ignorar no Git
+├── run.py                   # Arquivo principal para rodar o servidor Flask
+├── README.md                # Documentação do projeto
+
 ```
 
 ### Funcionalidades
